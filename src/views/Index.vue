@@ -215,8 +215,8 @@
               <table class="headers-table">
                 <thead>
                 <tr>
-                  <th class="header-name">名称</th>
-                  <th class="header-value">值</th>
+                  <th>名称</th>
+                  <th>值</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -231,7 +231,12 @@
         </div>
       </div>
     </main>
-
+    <!-- 页脚 -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p>© 2025 easyapi.surge.sh</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -341,7 +346,6 @@ interface Header {
               return;
             }
           }
-
           // 发送请求
           const response = await fetch(requestUrl.value, requestOptions);
           // 记录响应时间
@@ -396,7 +400,6 @@ interface Header {
             mode: 'tree',
             modes: ['tree', 'code', 'form', 'text', 'view'],
             placeholder: '请输入JSON格式的请求体',
-
           });
 
           // 设置默认JSON示例
@@ -411,7 +414,6 @@ interface Header {
           });
         }
         if (responseJsonEditorContainer.value) {
-          console.log(131232131);
           responseJsonEditor.value = new JSONEditor(responseJsonEditorContainer.value, {
             mode: 'tree', // 默认树形视图，更直观
             modes: ['tree', 'code', 'view'], // 响应结果通常不需要编辑，精简模式
