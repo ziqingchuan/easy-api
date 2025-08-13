@@ -5,4 +5,13 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   base: './',
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://spark-api-open.xf-yun.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  }
 })
