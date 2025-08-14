@@ -1,0 +1,80 @@
+.status-unknown {
+    background-color: #787878;
+}
+
+.status-success {
+    background-color: rgba(21, 218, 0, 0.4);
+}
+
+.status-redirect {
+    background-color: rgba(59, 130, 246, 0.63);
+}
+
+.status-client-error {
+    background-color: rgba(234, 153, 0, 0.4);
+}
+
+.status-server-error {
+    background-color: rgba(239, 68, 68, 0.65);
+}
+.method-btn-inactive {
+    background-color: white;
+    color: #64748b;
+    border-color: #cbd5e1;
+}
+
+.method-btn-inactive:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.method-btn-active {
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.method-btn-blue {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border-color: #93c5fd;
+}
+
+.method-btn-green {
+    background-color: #f0fdf4;
+    color: #059669;
+    border-color: #86efac;
+}
+
+.method-btn-orange {
+    background-color: #fff7ed;
+    color: #c2410c;
+    border-color: #fb923c;
+}
+
+.method-btn-red {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
+.method-btn-purple {
+    background-color: #faf5ff;
+    color: #7c3aed;
+    border-color: #c4b5fd;
+}
+
+.method-btn-gray {
+    background-color: #f8fafc;
+    color: #64748b;
+    border-color: #cbd5e1;
+}
+
+.method-btn-indigo {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    border-color: #a5b4fc;
+}
+
+.error-state {
+    color: #ef4444;
+}

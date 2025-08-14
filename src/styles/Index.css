@@ -57,10 +57,7 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
-    padding-left: 3%;
-    padding-right: 3%;
-    padding-top: 2%;
-    padding-bottom: 0;
+    padding: 2% 3% 0;
     background-color: white;
 }
 
@@ -122,12 +119,6 @@
     height: 100%;
 }
 
-.content-hidden {
-    max-height: 0;
-    padding: 0 16px;
-    overflow: hidden;
-}
-
 /* 请求方法按钮样式 */
 .method-buttons {
     display: flex;
@@ -149,63 +140,6 @@
     text-align: center;
 }
 
-.method-btn-inactive {
-    background-color: white;
-    color: #64748b;
-    border-color: #cbd5e1;
-}
-
-.method-btn-inactive:hover {
-    background-color: #f1f5f9;
-    border-color: #94a3b8;
-}
-
-.method-btn-active {
-    font-weight: 600;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.method-btn-blue {
-    background-color: #eff6ff;
-    color: #1d4ed8;
-    border-color: #93c5fd;
-}
-
-.method-btn-green {
-    background-color: #f0fdf4;
-    color: #059669;
-    border-color: #86efac;
-}
-
-.method-btn-orange {
-    background-color: #fff7ed;
-    color: #c2410c;
-    border-color: #fb923c;
-}
-
-.method-btn-red {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border-color: #fecaca;
-}
-
-.method-btn-purple {
-    background-color: #faf5ff;
-    color: #7c3aed;
-    border-color: #c4b5fd;
-}
-
-.method-btn-gray {
-    background-color: #f8fafc;
-    color: #64748b;
-    border-color: #cbd5e1;
-}
-
-.method-btn-indigo {
-    background-color: #eef2ff;
-    color: #4f46e5;
-    border-color: #a5b4fc;
-}
 
 /* URL输入框样式 */
 .url-input-container {
@@ -432,25 +366,6 @@
     font-weight: 600;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.status-unknown {
-    background-color: #787878;
-}
-
-.status-success {
-    background-color: rgba(21, 218, 0, 0.4);
-}
-
-.status-redirect {
-    background-color: rgba(59, 130, 246, 0.63);
-}
-
-.status-client-error {
-    background-color: rgba(234, 153, 0, 0.4);
-}
-
-.status-server-error {
-    background-color: rgba(239, 68, 68, 0.65);
-}
 
 .status-text {
     font-size: 0.875rem;
@@ -480,13 +395,8 @@
     text-align: center;
 }
 
-.error-state {
-    color: #ef4444;
-}
 
 /* 响应数据样式 */
-/* 响应结果编辑器样式 */
-/* 在样式中添加以下代码（确保在scoped范围内生效） */
 .response-body {
     flex: 1;
     padding: 16px;
@@ -551,51 +461,6 @@
     word-break: break-all;
 }
 
-/* 动画效果 */
-.chevron {
-    transition: transform 0.3s ease;
-}
-
-.chevron-rotated {
-    transform: rotate(180deg);
-}
-
-.spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* 滚动条样式 */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-    border: 1px solid transparent;
-    background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-}
-
 /* 元素获得焦点时的样式 */
 :focus {
     outline: none;
@@ -616,47 +481,6 @@
     background-position: center;
 }
 
-.header-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cline x1='1' y1='4' x2='23' y2='4'/%3E%3Cline x1='1' y1='10' x2='23' y2='10'/%3E%3Cline x1='1' y1='16' x2='23' y2='16'/%3E%3C/svg%3E");
-}
-
-.code-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='16 18 22 12 16 6'/%3E%3Cpolyline points='8 6 2 12 8 18'/%3E%3C/svg%3E");
-}
-
-.plus-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
-}
-
-.trash-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='3 6 5 6 21 6'/%3E%3Cpath d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'/%3E%3C/svg%3E");
-}
-
-.clock-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='12 6 12 12 16 14'/%3E%3C/svg%3E");
-}
-
-.exchange-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M12 20V10'/%3E%3Cpath d='M18 20l-6-6-6 6'/%3E%3Cpath d='M12 4v10'/%3E%3Cpath d='M6 4l6 6 6-6'/%3E%3C/svg%3E");
-    width: 48px;
-    height: 48px;
-}
-
-.error-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='15' y1='9' x2='9' y2='15'/%3E%3Cline x1='9' y1='9' x2='15' y2='15'/%3E%3C/svg%3E");
-    width: 48px;
-    height: 48px;
-}
-
-.chevron-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    transition: transform 0.3s ease;
-}
-
-.spinner-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cline x1='12' y1='2' x2='12' y2='6'/%3E%3Cline x1='12' y1='18' x2='12' y2='22'/%3E%3Cline x1='4.93' y1='4.93' x2='7.76' y2='7.76'/%3E%3Cline x1='16.24' y1='16.24' x2='19.07' y2='19.07'/%3E%3Cline x1='2' y1='12' x2='6' y2='12'/%3E%3Cline x1='18' y1='12' x2='22' y2='12'/%3E%3Cline x1='4.93' y1='19.07' x2='7.76' y2='16.24'/%3E%3Cline x1='16.24' y1='7.76' x2='19.07' y2='4.93'/%3E%3C/svg%3E");
-    animation: spin 1s linear infinite;
-}
 .footer {
     background-color: #f8fafc;
     padding: 16px 0;
@@ -679,7 +503,7 @@
     color: #64748b;
 }
 
-/* 新增AI助手按钮样式 */
+/* AI助手按钮样式 */
 .ai-assistant-btn {
     background-color: #377ff0;
     color: white;
@@ -699,10 +523,84 @@
     background-color: #2a6bd0;
 }
 
-/* 调整header布局 */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
+
+/* 在现有CSS文件末尾添加以下媒体查询 */
+
+@media (max-width: 768px) {
+    .app-container {
+        height: auto;
+    }
+
+    .main-content {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .request-panel, .response-panel {
+        width: 100%;
+        height: auto;
+    }
+
+    .request-panel {
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .method-buttons {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .method-btn {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+        min-width: 50px;
+    }
+
+    .url-input-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .url-input {
+        width: 100%;
+        margin-left: 0;
+        font-size: 0.9rem;
+    }
+
+    .section-header {
+        padding: 10px;
+    }
+    .section-content {
+        height: auto;
+        overflow: auto;
+    }
+    .json-editor-container, .response-json-editor {
+        min-height: 300px;
+        height: 100%;
+    }
+
+    .send-section {
+        padding: 10px 0;
+    }
+
+    .tabs-container {
+        justify-content: space-around;
+    }
+
+    .tab-btn {
+        flex: none;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .ai-assistant-btn {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+    .footer {
+        display: none;
+    }
 }

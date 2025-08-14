@@ -48,7 +48,7 @@
 
         <!-- 请求头设置 -->
         <div class="panel-section">
-          <div class="section-header" @click="showBody = false; showHeaders = true">
+          <div class="section-header" @click="showHeaders = !showHeaders">
             <div class="section-title">
               <span class="section-icon header-icon"></span>
               <h3>请求头</h3>
@@ -58,7 +58,7 @@
 
           <div
               class="section-content"
-              :class="{ 'content-hidden': !showHeaders }"
+              v-show="showHeaders"
           >
             <div class="headers-container">
               <button
@@ -101,7 +101,7 @@
 
         <!-- 请求体设置 -->
         <div class="panel-section panel-section-expandable">
-          <div class="section-header" @click="showBody = true; showHeaders = false">
+          <div class="section-header" @click="showBody = !showBody;">
             <div class="section-title">
               <span class="section-icon code-icon"></span>
               <h3>请求体</h3>
@@ -111,7 +111,7 @@
 
           <div
               class="section-content section-content-expandable"
-              :class="{ 'content-hidden': !showBody }"
+              v-show="showBody"
           >
             <div class="json-editor-container" ref="jsonEditorContainer"></div>
           </div>
@@ -237,7 +237,7 @@
     <!-- 页脚 -->
     <footer class="footer">
       <div class="footer-content">
-        <p>© 2025 easyapi.surge.sh</p>
+        <p>© 2025 easyapi.top</p>
       </div>
     </footer>
   </div>
@@ -453,4 +453,8 @@ interface Header {
 
 <style scoped>
 @import "../styles/Index.css";
+@import "../styles/Animation.css";
+@import "../styles/Colors.css";
+@import "../styles/Scrollbar.css";
+@import "../styles/Icons.css";
 </style>
