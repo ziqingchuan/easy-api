@@ -13,7 +13,7 @@ export default (req, res) => {
         target,
         changeOrigin: true,
         pathRewrite: {
-            '^/proxy/': '/',
+            '^/proxy': '',
         },
     });
 
