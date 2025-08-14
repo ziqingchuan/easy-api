@@ -6,12 +6,14 @@ export default defineConfig({
   plugins: [vue()],
   base: './',
   server: {
+    port: 3000,
+    host: true, // 确保可以通过局域网访问
     proxy: {
-      '/api': {
-        target: 'https://spark-api-open.xf-yun.com',
+      '/proxy': {
+        target: 'https://spark-api-open.xf-yun.com', // 确保地址和端口正确
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
-  }
+        secure: false,
+      },
+    },
+  },
 })

@@ -104,7 +104,7 @@ const sendMessage = async () => {
   }) - 1;
 
   try {
-    const response = await fetch('api/v1/chat/completions', {
+    const response = await fetch('/proxy/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer xmvyPnWEdDUsSsAJXPFV:ivlDhHshnlcPhKvTUZzY',
@@ -161,8 +161,7 @@ const sendMessage = async () => {
     }
 
     // 完整响应后，用 markdown-it 渲染
-    const renderedContent = md.render(fullResponse);
-    messages.value[aiMessageIndex].content = renderedContent;
+    messages.value[aiMessageIndex].content = md.render(fullResponse);
     messages.value = [...messages.value];
 
   } catch (error) {
@@ -338,6 +337,11 @@ watch(userInput, adjustTextareaHeight);
   outline: none;
   font-size: 0.9rem;
   transition: border-color 0.3s;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+  }
 }
 
 .input-container textarea:focus {
