@@ -7,3 +7,15 @@
 :deep(.jsoneditor-poweredBy) {
     display: none !important;
 }
+:deep(.jsoneditor-navigation-bar){
+    background-color: white;
+}
+:deep(.jsoneditor-menu) {
+    background-color: rgba(0, 118, 253, 0.7);
+    li {
+        background-color: white;
+    }
+}
+:deep(.jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected, .jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected:focus, .jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected:hover) {
+    background-color: rgba(0, 118, 253, 0.7);
+}

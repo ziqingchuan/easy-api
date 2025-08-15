@@ -223,6 +223,10 @@
                   <td class="header-key">{{ key }}</td>
                   <td class="header-val">{{ value }}</td>
                 </tr>
+                <tr v-if="Object.keys(responseHeaders).length === 0">
+                  <td class="header-key">null</td>
+                  <td class="header-val">null</td>
+                </tr>
                 </tbody>
               </table>
             </div>
@@ -425,7 +429,7 @@ interface Header {
         if (responseJsonEditorContainer.value) {
           responseJsonEditor.value = new JSONEditor(responseJsonEditorContainer.value, {
             mode: 'view',
-            modes: ['tree', 'code', 'form', 'text', 'view'],
+            modes: ['tree', 'code', 'text', 'view'],
             placeholder: '响应结果将显示在这里',
           });
         }
