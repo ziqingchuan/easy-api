@@ -79,7 +79,7 @@ const html = mathjax.document('', {
 });
 
 // 修改 Markdown 渲染器以支持数学公式
-const md = new MarkdownIt({
+const md: any = new MarkdownIt({
   highlight: function (str: any, lang: any) {
     if (lang && hljs.getLanguage(lang)) {
       try {
