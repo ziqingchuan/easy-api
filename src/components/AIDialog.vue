@@ -48,7 +48,7 @@
 import {nextTick, ref, watch} from 'vue';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github-dark.css';
+import 'highlight.js/styles/github.css';
 
 // 添加 MathJax 支持
 import { mathjax } from 'mathjax-full/js/mathjax';
