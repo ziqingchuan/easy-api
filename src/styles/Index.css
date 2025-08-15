@@ -204,10 +204,12 @@
 }
 
 .header-key {
+    color: #569CD6;
     flex: 1;
 }
 
 .header-value {
+    color: #CE9178;
     flex: 2;
 }
 
@@ -516,10 +518,29 @@
     background-color: #2a6bd0;
 }
 
+.fixed-btn {
+    display: none;
+}
+
 
 @media (max-width: 768px) {
     .app-container {
         height: 100%;
+    }
+
+    .header {
+        height: 40px;
+        text-align: center;
+        .logo-icon {
+            display: none;
+        }
+        h1 {
+            font-size: 0.9rem;
+        }
+    }
+
+    .ai-assistant-btn {
+        display: none;
     }
 
     .main-content {
@@ -609,5 +630,28 @@
     }
     .footer {
         display: none;
+    }
+
+    .fixed-btn {
+        background-color: rgba(55, 127, 240, 0.72);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        z-index: 10;
+        right: 10px;
+        bottom: 10px;
+    }
+    .fixed-btn:hover {
+        background-color: #2a6bd0;
     }
 }
