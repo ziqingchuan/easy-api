@@ -169,14 +169,13 @@
 .input-container button:not(:disabled):hover {
     background-color: #2a6bd0;
 }
-
 /* Markdown 通用样式 */
-.message.ai >>> p {
+.message.ai :deep(p) {
     margin: 0.5em 0;
     line-height: 1.6;
 }
 
-.message.ai >>> pre {
+.message.ai :deep(pre) {
     background-color: #f2f6ff;
     border-radius: 4px;
     padding: 12px;
@@ -184,7 +183,7 @@
     overflow-x: auto;
 }
 
-.message.ai >>> code {
+.message.ai :deep(code) {
     font-family: 'Courier New', Courier, monospace;
     padding: 2px 4px;
     border-radius: 3px;
@@ -196,49 +195,49 @@
     }
 }
 
-.message.ai >>> pre code {
+.message.ai :deep(pre code) {
     background-color: transparent;
     padding: 0;
 }
 
-.message.ai >>> blockquote {
+.message.ai :deep(blockquote) {
     border-left: 3px solid #377ff0;
     margin: 0;
     padding-left: 1em;
     color: #555;
 }
 
-.message.ai >>> ul,
-.message.ai >>> ol {
+.message.ai :deep(ul),
+.message.ai :deep(ol) {
     padding-left: 1.5em;
     margin: 0.5em 0;
 }
 
-.message.ai >>> li {
+.message.ai :deep(li) {
     margin: 0.3em 0;
 }
 
-.message.ai >>> table {
+.message.ai :deep(table) {
     border-collapse: collapse;
     width: 100%;
     margin: 1em 0;
 }
 
-.message.ai >>> th,
-.message.ai >>> td {
+.message.ai :deep(th),
+.message.ai :deep(td) {
     border: 1px solid #ddd;
     padding: 8px;
 }
 
-.message.ai >>> th {
+.message.ai :deep(th) {
     background-color: #f2f2f2;
 }
 
-.message.ai >>> a {
+.message.ai :deep(a) {
     color: #377ff0;
     text-decoration: none;
 }
 
-.message.ai >>> a:hover {
+.message.ai :deep(a:hover) {
     text-decoration: underline;
 }

@@ -19,3 +19,4 @@
 :deep(.jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected, .jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected:focus, .jsoneditor-contextmenu .jsoneditor-menu li button.jsoneditor-selected:hover) {
     background-color: rgba(0, 118, 253, 0.7);
 }
+
