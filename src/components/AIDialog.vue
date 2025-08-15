@@ -17,7 +17,7 @@
             <div v-else>{{ message.content }}</div>
           </div>
 
-          <div v-if="isLoading" class="message ai">
+          <div v-if="isLoading">
             <div class="typing-indicator">
               <span></span>
               <span></span>
@@ -415,21 +415,6 @@ watch(userInput, adjustTextareaHeight);
 
 .input-container button:not(:disabled):hover {
   background-color: #2a6bd0;
-}
-
-/* MathJax 公式样式 */
-.message.ai >>> .mjx-svg {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.message.ai >>> .mjx-chtml {
-  font-size: 110%;
-}
-
-.message.ai >>> .MathJax_SVG_Display {
-  text-align: center;
-  margin: 1em 0;
 }
 
 /* Markdown 通用样式 */
