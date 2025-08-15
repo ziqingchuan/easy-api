@@ -189,6 +189,9 @@
     padding: 2px 4px;
     border-radius: 3px;
     font-size: 0.9em;
+    word-wrap: break-word; /* 允许换行 */
+    white-space: normal; /* 覆盖可能存在的 nowrap 设置 */
+    overflow-wrap: break-word;
 }
 
 .message.ai >>> pre code {

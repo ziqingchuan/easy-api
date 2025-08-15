@@ -72,18 +72,21 @@
                     :key="index"
                     class="header-item"
                 >
-                  <input
-                      v-model="header.key"
-                      type="text"
-                      class="header-key"
-                      placeholder="Key"
-                  >
-                  <input
-                      v-model="header.value"
-                      type="text"
-                      class="header-value"
-                      placeholder="Value"
-                  >
+                  <div class="header-item-input">
+                    <input
+                        v-model="header.key"
+                        type="text"
+                        class="header-key"
+                        placeholder="Key"
+                    >
+                    <input
+                        v-model="header.value"
+                        type="text"
+                        class="header-value"
+                        placeholder="Value"
+                    >
+                  </div>
+
                   <button
                       @click="removeHeader(index)"
                       class="remove-header-btn"
