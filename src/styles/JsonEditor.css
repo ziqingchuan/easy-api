@@ -1,0 +1,9 @@
+:deep(.jsoneditor-search) {
+    display: none !important;
+}
+:deep(.jsoneditor-transform) {
+    display: none !important;
+}
+:deep(.jsoneditor-poweredBy) {
+    display: none !important;
+}

@@ -2,7 +2,7 @@
   <div class="ai-dialog-overlay" v-if="showAIDialog" @click.self="closeDialog">
     <div class="ai-dialog-container">
       <div class="ai-dialog-header">
-        <h2>AI助手</h2>
+        <h2>小E</h2>
         <button class="close-btn" @click="closeDialog">×</button>
       </div>
       <div class="ai-dialog-content">
@@ -33,11 +33,11 @@
                    ref="textareaRef"
                    rows="1"
                ></textarea>
-                <button
-                    @click="sendMessage"
-                    :disabled="isLoading || !userInput.trim()"
-                >
-                </button>
+          <button
+              @click="sendMessage"
+              :disabled="isLoading || !userInput.trim()"
+          >
+          </button>
         </div>
       </div>
     </div>
@@ -46,16 +46,39 @@
 
 <script setup lang="ts">
 import {nextTick, ref, watch} from 'vue';
-// @ts-ignore
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
+
+// 添加 MathJax 支持
+import { mathjax } from 'mathjax-full/js/mathjax';
+import { TeX } from 'mathjax-full/js/input/tex';
+import { SVG } from 'mathjax-full/js/output/svg';
+import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor';
+import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html';
 
 interface Message {
   role: 'ai' | 'user';
   content: string;
 }
 
+// 创建适配器和处理器
+const adaptor = liteAdaptor();
+RegisterHTMLHandler(adaptor);
+
+// 创建 TeX 输入和 SVG 输出处理器
+const tex = new TeX({
+  packages: ['base', 'ams', 'newcommand', 'configmacros']
+});
+const svg = new SVG({ fontCache: 'local' });
+
+// 创建文档处理器
+const html = mathjax.document('', {
+  InputJax: tex,
+  OutputJax: svg
+});
+
+// 修改 Markdown 渲染器以支持数学公式
 const md = new MarkdownIt({
   highlight: function (str: any, lang: any) {
     if (lang && hljs.getLanguage(lang)) {
@@ -65,6 +88,29 @@ const md = new MarkdownIt({
     }
     return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`;
   }
+}).use(function(md) {
+  // 添加数学公式解析器
+  const originalRender = md.renderer.rules.text;
+
+  md.renderer.rules.text = function(tokens, idx, options, env, self) {
+    const content = tokens[idx].content;
+
+    // 检测行内数学公式
+    const inlineMathRegex = /(?<!\\)\$(.*?[^\\])\$/g;
+    let result = content.replace(inlineMathRegex, (match, equation) => {
+      const node = html.convert(equation, { display: false });
+      return adaptor.innerHTML(node);
+    });
+
+    // 检测块级数学公式
+    const blockMathRegex = /(?<!\\)\$\$(.*?[^\\])\$\$/g;
+    result = result.replace(blockMathRegex, (match, equation) => {
+      const node = html.convert(equation, { display: true });
+      return adaptor.innerHTML(node);
+    });
+
+    return result;
+  };
 });
 
 defineProps({
@@ -143,7 +189,7 @@ const sendMessage = async () => {
             const data = JSON.parse(jsonStr);
             if (data.choices && data.choices[0].delta.content) {
               fullResponse += data.choices[0].delta.content;
-              // 实时更新内容（不渲染 Markdown，等完整响应后再渲染）
+              // 实时更新内容
               messages.value[aiMessageIndex].content = fullResponse;
               messages.value = [...messages.value];
 
@@ -171,6 +217,7 @@ const sendMessage = async () => {
     isLoading.value = false;
   }
 };
+
 // 处理键盘事件
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Enter' && (e.ctrlKey || e.shiftKey)) {
@@ -370,6 +417,21 @@ watch(userInput, adjustTextareaHeight);
   background-color: #2a6bd0;
 }
 
+/* MathJax 公式样式 */
+.message.ai >>> .mjx-svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.message.ai >>> .mjx-chtml {
+  font-size: 110%;
+}
+
+.message.ai >>> .MathJax_SVG_Display {
+  text-align: center;
+  margin: 1em 0;
+}
+
 /* Markdown 通用样式 */
 .message.ai >>> p {
   margin: 0.5em 0;
@@ -377,7 +439,7 @@ watch(userInput, adjustTextareaHeight);
 }
 
 .message.ai >>> pre {
-  background-color: #353535;
+  background-color: #edf2ff;
   border-radius: 4px;
   padding: 12px;
   margin: 10px 0;

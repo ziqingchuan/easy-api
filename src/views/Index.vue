@@ -16,9 +16,8 @@
       <!-- 左侧请求编辑区 -->
       <div class="request-panel">
         <!-- 请求设置 -->
-        <div class="panel-section">
           <div class="method-buttons">
-            请求方法：
+            <span>请求方法：</span>
             <!-- 请求方法选择 -->
             <button
                 v-for="method in requestMethods"
@@ -36,7 +35,7 @@
 
           <!-- URL输入 -->
           <div class="url-input-container">
-              URL:
+            <span>URL:</span>
             <input
                 v-model="requestUrl"
                 type="text"
@@ -44,10 +43,8 @@
                 placeholder="https://api.example.com/endpoint"
             >
           </div>
-        </div>
 
-        <!-- 请求头设置 -->
-        <div class="panel-section">
+          <!-- 请求头设置 -->
           <div class="section-header" @click="showHeaders = !showHeaders">
             <div class="section-title">
               <span class="section-icon header-icon"></span>
@@ -97,10 +94,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- 请求体设置 -->
-        <div class="panel-section panel-section-expandable">
           <div class="section-header" @click="showBody = !showBody;">
             <div class="section-title">
               <span class="section-icon code-icon"></span>
@@ -110,33 +103,31 @@
           </div>
 
           <div
-              class="section-content section-content-expandable"
+              class="section-content"
               v-show="showBody"
           >
             <div class="json-editor-container" ref="jsonEditorContainer"></div>
           </div>
-        </div>
-
-        <!-- 发送按钮 -->
-        <div class="send-section">
-          <div class="response-time">
+          <!-- 发送按钮 -->
+          <div class="send-section">
+            <div class="response-time">
             <span style="display: flex; flex-direction: row; gap: 5px; align-items: center" v-if="responseTime > 0">
               <span class="btn-icon clock-icon"></span>
               <span>请求耗时：{{ responseTime }}ms</span>
             </span>
+            </div>
+            <button
+                @click="sendRequest"
+                :disabled="isLoading || !requestUrl"
+                class="send-btn"
+            >
+              <span>发送请求</span>
+              <span
+                  class="btn-icon spinner-icon"
+                  v-if="isLoading"
+              ></span>
+            </button>
           </div>
-          <button
-              @click="sendRequest"
-              :disabled="isLoading || !requestUrl"
-              class="send-btn"
-          >
-            <span>发送请求</span>
-            <span
-                class="btn-icon spinner-icon"
-                v-if="isLoading"
-            ></span>
-          </button>
-        </div>
       </div>
 
       <!-- 右侧响应展示区 -->
@@ -407,7 +398,7 @@ interface Header {
       onMounted(() => {
         if (jsonEditorContainer.value) {
           jsonEditor.value = new JSONEditor(jsonEditorContainer.value, {
-            mode: 'tree',
+            mode: 'view',
             modes: ['tree', 'code', 'form', 'text', 'view'],
             placeholder: '请输入JSON格式的请求体',
           });
@@ -425,10 +416,9 @@ interface Header {
         }
         if (responseJsonEditorContainer.value) {
           responseJsonEditor.value = new JSONEditor(responseJsonEditorContainer.value, {
-            mode: 'tree', // 默认树形视图，更直观
-            modes: ['tree', 'code', 'view'], // 响应结果通常不需要编辑，精简模式
+            mode: 'view',
+            modes: ['tree', 'code', 'form', 'text', 'view'],
             placeholder: '响应结果将显示在这里',
-            readOnly: true, // 响应结果设为只读，防止编辑
           });
         }
       });
@@ -457,4 +447,5 @@ interface Header {
 @import "../styles/Colors.css";
 @import "../styles/Scrollbar.css";
 @import "../styles/Icons.css";
+@import "../styles/JsonEditor.css";
 </style>

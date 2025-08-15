@@ -16,14 +16,16 @@
     "highlight.js": "^11.11.1",
     "jsoneditor": "^10.3.0",
     "markdown-it": "^14.1.0",
+    "mathjax-full": "^3.2.2",
     "vue": "^3.5.17"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vue/tsconfig": "^0.7.0",
     "gh-pages": "^6.3.0",
-    "typescript": "~5.8.3",
     "http-proxy-middleware": "^3.0.5",
+    "typescript": "~5.8.3",
     "vite": "^7.0.4",
     "vue-tsc": "^2.2.12"
   }
