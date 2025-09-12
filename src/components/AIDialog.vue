@@ -8,13 +8,13 @@
       <div class="ai-dialog-content">
         <div class="messages-container">
           <div
-              v-for="(message, index) in messages"
+              v-for="(message, index) in messages.filter(message => message.content.trim()!== '')"
               :key="index"
               :class="['message', message.role]"
           >
             <!-- 使用 v-html 渲染 Markdown -->
             <div v-if="message.role === 'ai'" v-html="message.content"></div>
-            <div v-else>{{ message.content }}</div>
+            <div v-if="message.role === 'user'">{{ message.content }}</div>
           </div>
 
           <div v-if="isLoading">
@@ -208,7 +208,9 @@ const sendMessage = async () => {
     messages.value[aiMessageIndex].content = md.render(fullResponse);
     messages.value = [...messages.value];
 
-  } catch (error) {
+  }
+
+  catch (error) {
     console.error('API 调用失败:', error);
     messages.value[aiMessageIndex].content = `抱歉，处理您的请求时出错: ${error}`;
   } finally {
@@ -225,21 +227,6 @@ const handleKeydown = (e: KeyboardEvent) => {
   // Shift+Enter 会自然换行（不需要处理）
 };
 
-// 动态调整 textarea 高度
-const adjustTextareaHeight = () => {
-  nextTick(() => {
-    if (textareaRef.value) {
-      textareaRef.value.style.height = 'auto';
-      textareaRef.value.style.height = `${Math.min(
-          textareaRef.value.scrollHeight,
-          60 // 最大高度限制（可选）
-      )}px`;
-    }
-  });
-};
-
-// 在 userInput 变化时调整高度
-watch(userInput, adjustTextareaHeight);
 </script>
 
 <style scoped>

@@ -46,6 +46,7 @@
     line-height: 1;
 }
 
+
 .ai-dialog-content {
     display: flex;
     flex-direction: column;
@@ -53,6 +54,7 @@
 }
 
 .messages-container {
+    position: relative;
     flex: 1;
     padding: 20px;
     overflow-y: auto;
@@ -135,6 +137,7 @@
     border: 1px solid #e2e8f0;
     border-radius: 25px;
     outline: none;
+    min-height: 20px;
     font-size: 0.9rem;
     transition: border-color 0.3s;
     scrollbar-width: none; /* Firefox */
@@ -181,6 +184,8 @@
     padding: 12px;
     margin: 10px 0;
     overflow-x: auto;
+    scrollbar-width: thin; /* Firefox：设置滚动条宽度（thin/auto/none） */
+    scrollbar-color: rgba(209, 209, 209, 0.5) transparent; /* Firefox：滚动条滑块颜色 + 轨道颜色 */
 }
 
 .message.ai :deep(code) {
