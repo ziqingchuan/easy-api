@@ -252,7 +252,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 // @ts-ignore
 import JSONEditor from 'jsoneditor';
 import 'jsoneditor/dist/jsoneditor.min.css';
@@ -317,9 +317,29 @@ interface Header {
         requestHeaders.value.splice(index, 1);
       };
 
-// 发送请求
+// URL验证函数
+      const validateUrl = (url: string): boolean => {
+        if (!url.trim()) return false;
+        try {
+          new URL(url);
+          return true;
+        } catch {
+          return false;
+        }
+      };
+
+      // 发送请求
       const sendRequest = async () => {
-        if (!requestUrl.value) return;
+        if (!requestUrl.value.trim()) {
+          errorMessage.value = 'URL不能为空';
+          return;
+        }
+
+        // 基础URL验证
+        if (!validateUrl(requestUrl.value)) {
+          errorMessage.value = 'URL格式无效，请输入有效的HTTP/HTTPS地址';
+          return;
+        }
 
         isLoading.value = true;
         errorMessage.value = '';
@@ -336,6 +356,7 @@ interface Header {
           const requestOptions: RequestInit = {
             method: selectedMethod.value,
             headers: {} as Record<string, string>,
+            signal: AbortSignal.timeout(30000) // 30秒超时
           };
 
           // 设置请求头
@@ -351,16 +372,26 @@ interface Header {
             try {
               const jsonData = jsonEditor.value.get();
               if (jsonData && Object.keys(jsonData).length > 0) {
-                requestOptions.body = JSON.stringify(jsonData);
+                // 验证JSON数据大小（限制10MB）
+                const jsonString = JSON.stringify(jsonData);
+                const sizeInMB = new Blob([jsonString]).size / (1024 * 1024);
+                if (sizeInMB > 10) {
+                  errorMessage.value = '请求体过大，建议小于10MB';
+                  isLoading.value = false;
+                  return;
+                }
+                requestOptions.body = jsonString;
               }
             } catch (err) {
-              errorMessage.value = '请求体JSON格式错误';
+              errorMessage.value = '请求体JSON格式错误，请检查语法';
               isLoading.value = false;
               return;
             }
           }
+
           // 发送请求
           const response = await fetch(requestUrl.value, requestOptions);
+          
           // 记录响应时间
           responseTime.value = Math.round(performance.now() - startTime);
 
@@ -377,29 +408,61 @@ interface Header {
           responseContentType.value = response.headers.get('content-type') || '';
 
           // 解析响应内容
-          if (responseContentType.value.includes('application/json')) {
-            responseData.value = await response.json();
-            console.log(responseData.value);
-            if (responseJsonEditor.value) {
-              responseJsonEditor.value.set(responseData.value); // 设置响应数据到编辑器
+          let responseData: any;
+          try {
+            if (responseContentType.value.includes('application/json')) {
+              responseData = await response.json();
+            } else if (responseContentType.value.includes('text/')) {
+              responseData = await response.text();
+            } else {
+              // 对于其他类型，尝试读取为文本
+              responseData = await response.text();
             }
-          } else {
-            const text = await response.text();
-            responseData.value = text || 'No content';
-            if (responseJsonEditor.value) {
-              responseJsonEditor.value.set({ responseText: responseData.value });
-            }
+          } catch (parseError) {
+            // 如果解析失败，显示原始响应信息
+            responseData = {
+              error: '响应内容解析失败',
+              contentType: responseContentType.value,
+              status: response.status,
+              statusText: response.statusText
+            };
+          }
+
+          // 更新响应数据
+          responseData.value = responseData;
+          
+          if (responseJsonEditor.value) {
+            responseJsonEditor.value.set(responseData);
+          }
+
+          // 如果响应不成功，显示错误信息
+          if (!response.ok) {
+            errorMessage.value = `请求失败: ${response.status} ${response.statusText}`;
           }
 
         } catch (err) {
           responseTime.value = Math.round(performance.now() - startTime);
+          
+          // 处理不同类型的错误
           if (err instanceof Error) {
-            errorMessage.value = err.message;
+            if (err.name === 'AbortError' || err.message.includes('timeout')) {
+              errorMessage.value = '请求超时，请检查网络连接或稍后重试';
+            } else if (err.message.includes('Failed to fetch')) {
+              errorMessage.value = '网络连接失败，请检查网络或URL是否正确';
+            } else if (err.message.includes('CORS')) {
+              errorMessage.value = 'CORS跨域错误，服务器不允许此请求';
+            } else {
+              errorMessage.value = `请求错误: ${err.message}`;
+            }
           } else {
-            errorMessage.value = '请求发生错误，请检查网络连接或URL';
+            errorMessage.value = '请求发生未知错误，请稍后重试';
           }
+          
           if (responseJsonEditor.value) {
-            responseJsonEditor.value.set({ error: errorMessage.value });
+            responseJsonEditor.value.set({ 
+              error: errorMessage.value,
+              timestamp: new Date().toISOString()
+            });
           }
         } finally {
           isLoading.value = false;
@@ -408,34 +471,93 @@ interface Header {
 
 // 初始化JSON编辑器
       onMounted(() => {
-        if (jsonEditorContainer.value) {
-          jsonEditor.value = new JSONEditor(jsonEditorContainer.value, {
-            mode: 'view',
-            modes: ['tree', 'code', 'form', 'text', 'view'],
-            placeholder: '请输入JSON格式的请求体',
-          });
+        try {
+          if (jsonEditorContainer.value) {
+            jsonEditor.value = new JSONEditor(jsonEditorContainer.value, {
+              mode: 'code',
+              modes: ['tree', 'code', 'form', 'text'],
+              placeholder: '请输入JSON格式的请求体',
+              onError: (error: Error) => {
+                console.warn('JSON编辑器错误:', error.message);
+              },
+              onValidationError: (errors: any[]) => {
+                console.warn('JSON验证错误:', errors);
+              }
+            });
 
-          // 设置默认JSON示例
-          jsonEditor.value.set({
-            exampleKey: "exampleValue",
-            numberValue: 123,
-            booleanValue: true,
-            objectValue: {
-              nestedKey: "nestedValue"
-            },
-            arrayValue: ["item1", "item2"]
-          });
-        }
-        if (responseJsonEditorContainer.value) {
-          responseJsonEditor.value = new JSONEditor(responseJsonEditorContainer.value, {
-            mode: 'view',
-            modes: ['tree', 'code', 'text', 'view'],
-            placeholder: '响应结果将显示在这里',
-          });
+            // 设置默认JSON示例
+            jsonEditor.value.set({
+              "message": "Hello World",
+              "timestamp": new Date().toISOString(),
+              "data": {
+                "userId": 1,
+                "active": true
+              }
+            });
+          }
+          
+          if (responseJsonEditorContainer.value) {
+            responseJsonEditor.value = new JSONEditor(responseJsonEditorContainer.value, {
+              mode: 'tree',
+              modes: ['tree', 'code', 'text', 'view'],
+              placeholder: '响应结果将显示在这里',
+              readOnly: true,
+              onError: (error: Error) => {
+                console.warn('响应JSON编辑器错误:', error.message);
+              }
+            });
+          }
+        } catch (error) {
+          console.error('JSON编辑器初始化失败:', error);
+          errorMessage.value = 'JSON编辑器初始化失败，请刷新页面重试';
         }
       });
 
-// 监听响应数据变化，格式化显示
+// 清空响应数据
+      const clearResponse = () => {
+        responseData.value = null;
+        responseStatus.value = null;
+        statusText.value = '';
+        responseHeaders.value = {};
+        responseContentType.value = '';
+        errorMessage.value = '';
+        responseTime.value = 0;
+        
+        if (responseJsonEditor.value) {
+          responseJsonEditor.value.set({});
+        }
+      };
+
+      // 复制响应数据到剪贴板
+      const copyResponse = async () => {
+        if (!responseData.value) return;
+        
+        try {
+          const textToCopy = typeof responseData.value === 'object' 
+            ? JSON.stringify(responseData.value, null, 2)
+            : responseData.value.toString();
+          
+          await navigator.clipboard.writeText(textToCopy);
+          // 这里可以添加一个提示消息
+          console.log('响应数据已复制到剪贴板');
+        } catch (error) {
+          console.error('复制失败:', error);
+        }
+      };
+
+      // 格式化JSON数据
+      const formatJsonInEditor = () => {
+        if (!jsonEditor.value) return;
+        
+        try {
+          const data = jsonEditor.value.get();
+          jsonEditor.value.set(data); // 重新设置会自动格式化
+        } catch (error) {
+          console.warn('JSON格式化失败:', error);
+        }
+      };
+
+      // 监听响应数据变化，格式化显示
       watch(responseData, (newData) => {
         if (newData && typeof newData === 'object') {
           formattedResponseData.value = JSON.stringify(newData, null, 2);
@@ -446,10 +568,45 @@ interface Header {
         }
       });
 
-// 当请求方法变化时，自动调整是否显示请求体
+
+
+// 键盘快捷键处理
+      const handleKeydown = (event: KeyboardEvent) => {
+        // Ctrl/Cmd + Enter 发送请求
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+          event.preventDefault();
+          if (!isLoading.value && requestUrl.value) {
+            sendRequest();
+          }
+        }
+        
+        // Ctrl/Cmd + K 清空响应
+        if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+          event.preventDefault();
+          clearResponse();
+        }
+        
+        // Ctrl/Cmd + Shift + F 格式化JSON
+        if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'F') {
+          event.preventDefault();
+          formatJsonInEditor();
+        }
+      };
+
+      // 当请求方法变化时，自动调整是否显示请求体
       watch(selectedMethod, (newMethod) => {
         // GET、HEAD等方法通常没有请求体
         showBody.value = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(newMethod);
+      });
+
+      // 添加键盘事件监听
+      onMounted(() => {
+        document.addEventListener('keydown', handleKeydown);
+      });
+
+      // 清理事件监听
+      onUnmounted(() => {
+        document.removeEventListener('keydown', handleKeydown);
       });
 </script>
 
